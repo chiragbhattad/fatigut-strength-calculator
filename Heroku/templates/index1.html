@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<style>
+form {
+    margin: auto;
+    width: 35%;
+}
+.result {
+    margin: auto;
+    width: 35%;
+}
+body {
+    background-color: #ADD8E6;
+}
+div {
+  border: 1px solid black;
+  margin-right: 190px;
+  margin-left: 190px;
+}
+</style>
+<head>
+    <title>Fatigue Strength prediction model</title>
+</head>
+
+<img src = "https://upload.wikimedia.org/wikipedia/en/thumb/6/69/IIT_Madras_Logo.svg/220px-IIT_Madras_Logo.svg.png" style="float:right;width:100px;height:100px;" class="center">
+
+<p style="color:brown;"> This webpage is created by <b style="color:black;"> Chirag R Bhattad </b> as a part of Dual Degree Project at Metallurgical and Materials Engineering, IIT Madras. </p>
+
+<a href="https://github.com/chiragbhattad/Exploration-of-data-science-techniques-to-predict-fatigue-strength-of-steel-from-composition-and-pro
+"> The resources used and the thesis pertaining to this project can be found on Github</a> 
+
+<h1 align="center" style="font-family:Fantasy;"> Steel Fatigue Strength Predictor </h1>
+
+<div>
+<p align="center" style="font-family:Monospace;"> Welcome to the steel fatigue strength predictor. This calculator is built using experimental values of 437 different steels, taken from Japan's National Institute for Material Science (NIMS), MatNavi database. The dataset consists of chemical composition, and steelmaking parameters. The calculator takes the help of an ensemble deep learning model to reduce the number of features present in the dataset from 25 to 5 with a very little drop in accuracy. The features were selected based on the feature ranking provided by the machine learning models. </p>
+
+<p align="center" style="font-family:Monospace;"> Please enter the values of the following 5 parameters to calculate the fatigue strength of your steel: </p>
+
+<form action="{{ url_for('main') }}", method="POST">
+    <fieldset >
+        <legend>Input values:</legend>
+        Tempering Temperature:
+        <input name="TT" type="text" required>
+        <br>
+        <br> % Carbon (<1.0%):
+        <input name="C" type="text" required>
+        <br>
+        <br> % Chromium (<1.0%):
+        <input name="Cr" type="text" required>
+        <br>
+        <br> % Manganese (<1.0%):
+        <input name="Mn" type="text" required>
+        <br>
+        <br> % Phosporous (<1.0%):
+        <input name="P" type="text" required>
+        <br>
+        <input type="submit">
+    </fieldset>
+</form>
+<br>
+</div>
+
+<div class="result" align="center">
+    {% if result %}
+        {% for variable, value in original_input.items() %}
+            <b>{{ variable }}</b> : {{ value }}
+        {% endfor %}
+        <br>
+        <br> Predicted Fatigue strength of the material:
+           <p style="font-size:50px">{{ result }}</p>
+    {% endif %}
+</div>
+</html>
