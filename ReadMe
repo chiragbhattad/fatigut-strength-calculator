@@ -1,3 +1,4 @@
+
 As a part of my Metallurgical and Materials Engineering Dual Degree project, fatigue strength dataset from the National Institute of Materials Science (NIMS), MatNavi, Japan was extracted. Complex Statistical models and machine learning models are applied onto this dataset to fit the dataset without the loss of generality.
 
 The dataset consists of just 437 datapoints and thus requires an Ensemble Deep Learning Model. This model helps create a general purpose Fatigue Strength Calculator which can be used by experimentalists and Material Scientists to predict fatigue strength values before creating certain strain of steel.
