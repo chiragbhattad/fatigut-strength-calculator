@@ -1,34 +1,36 @@
-import pandas as pd
 import flask
-from flask import Flask, jsonify, request
 import pickle
-import joblib
+import pandas as pd
 
-app = Flask(__name__, template_folder='templates')
+app = flask.Flask(__name__, template_folder='templates')
 
-filename = "finalized_model.sav"
-model = joblib.load(filename)
-with open("vectorizer.pickle", "rb") as handle:
-	vectorizer = pickle.load(handle)
+model1 = pickle.load(open("model1.pkl","rb"))
+model1._make_predict_function()
+model2 = pickle.load(open("model2.pkl","rb"))
+model3 = pickle.load(open("model3.pkl","rb"))
+model4 = pickle.load(open("model4.pkl","rb"))
+model5 = pickle.load(open("model5.pkl","rb"))
 
 @app.route('/', methods=['GET', 'POST'])
-
-def predict():
-    if request.method == 'GET':
-        return(flask.render_template('/main.html'))
+def main():
+    if flask.request.method == 'GET':
+        return(flask.render_template('/index1.html'))
     if flask.request.method == 'POST':
-        data = request.get_data()
-        new=[data]
-        message=vectorizer.transform(new)
-        pred = model.predict(message)
-        pred_msg = "Error"
-        if str(pred[0]) == '1':
-            pred_msg = "SPAM"
-        else:
-            pred_msg = "SPAM"
-        return flask.render_template('/main.html',
-                                     original_input={'TT': data},
-                                     result=pred_msg)
+        TT = flask.request.form['TT']
+        C = flask.request.form['C']
+        Cr = flask.request.form['Cr']
+        Mn = flask.request.form['Mn']
+        P = flask.request.form['P']
+        input_variables = pd.DataFrame([[TT, C, Cr, Mn, P]], columns=['TT', 'C', 'Cr', 'Mn', 'P'], dtype=float)
+        pred = (model1.predict(input_variables)[0] + model2.predict(input_variables)[0] + model3.predict(input_variables)[0] + model4.predict(input_variables)[0] + model5.predict(input_variables)[0])/5
+
+        return flask.render_template('/index1.html',
+                                     original_input={'TT': TT,
+                                                     'C': C,
+                                                     'Cr': Cr,
+                                                     'Mn': Mn,
+                                                     'P': P},
+                                     result=pred,)
 
 if __name__ == '__main__':
-    app.run(port = 5000, debug=True)
+    app.run()
